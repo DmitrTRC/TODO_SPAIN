@@ -1,13 +1,12 @@
 from django.db import models
 from django.utils import timezone
 import datetime
-from django import forms
 
 
-class NewTodoForm(forms.ModelForm):
+class Todo(models.Model):
     text = models.CharField(max_length=80)
     deadline_time = models.DateTimeField(verbose_name='Deadline', blank=True, default=timezone.now)
-    complete = models.BooleanField(default=True)
+    complete = models.BooleanField(default=False)
 
     def __str__(self):
         return self.text

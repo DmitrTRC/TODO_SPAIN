@@ -1,13 +1,14 @@
 from django.shortcuts import render, redirect
 from django.http import HttpResponse
 from .models import Todo
-from .forms import TodoForm
+from .forms import TodoForm, MainTodoForm
 from django.views.decorators.http import require_POST
 
 
 def index(request):
     todo_list = Todo.objects.order_by('complete')
-    form = TodoForm()
+    # form = TodoForm()
+    form = MainTodoForm()
 
     content = {
         'todo_list': todo_list,
@@ -19,12 +20,10 @@ def index(request):
 
 @require_POST
 def add_todo(request):
-    form = TodoForm(request.POST)
+    form = MainTodoForm(request.POST)
     if form.is_valid():
-        new_todo = Todo(text=form.clean_data['text'], complete=False)
-        new_todo.save()
+        new_todo = form.save()
 
-    print(request.POST.get('text', 'UNDEFINED!'))
     return redirect('index')
 
 
